@@ -1,6 +1,9 @@
+"use client";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { Navbar, Footer } from "./components";
+import { MainStyled } from "./page.styled";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,14 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <nav>
-          <a href="/">Home</a>
-          <a href="/settings">Ustawienia</a>
-        </nav>
+        <Navbar />
         {children}
-        <footer>
-          <a href="/about">O mnie</a>
-        </footer>
+        <Footer />
       </body>
     </html>
   );

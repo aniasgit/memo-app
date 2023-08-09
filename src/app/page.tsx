@@ -1,13 +1,15 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { PlayButton } from "./components";
+import { HeaderStyled, MainStyled } from "./page.styled";
 
 export default function Home() {
   const router = useRouter();
 
   return (
-    <main>
-      <h1>Strona główna</h1>
-      <button onClick={() => router.push("/game")}>Graj</button>
-    </main>
+    <MainStyled>
+      <HeaderStyled>Play memo game</HeaderStyled>
+      <PlayButton />
+    </MainStyled>
   );
 }
