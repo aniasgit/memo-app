@@ -1,19 +1,23 @@
-"use client";
 import Image from "next/image";
 import { BackFaceStyled, CardStyled, FrontFaceStyled } from "./Card.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestion } from "@fortawesome/free-solid-svg-icons";
 
+export interface ImageInterface {
+  src: string;
+  alt: string;
+}
+
 interface CardInterface {
   id: number;
-  isFlipped: boolean;
-  image: { src: string; alt: string };
+  isOpen: boolean;
+  image: ImageInterface;
   onClick: (id: number) => void;
 }
 
-export const Card = ({ id, isFlipped, image, onClick }: CardInterface) => {
+export const Card = ({ id, isOpen, image, onClick }: CardInterface) => {
   return (
-    <CardStyled isFlipped={isFlipped}>
+    <CardStyled $isOpen={isOpen}>
       <FrontFaceStyled>
         <Image src={image.src} alt={image.alt} width={50} height={50} />
       </FrontFaceStyled>

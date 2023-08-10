@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Card } from "./components";
+import { useEffect, useRef, useState } from "react";
+import { Card, ImageInterface } from "./components";
 import {
   CardContainer,
   GamePageContainer,
@@ -8,62 +8,66 @@ import {
 } from "./page.styled";
 import { Button } from "../components";
 
+const images = [
+  { src: "/img/elephant.png", alt: "elephant" },
+  { src: "/img/giraffe.png", alt: "giraffe" },
+  { src: "/img/owl.png", alt: "owl" },
+  { src: "/img/panda.png", alt: "panda" },
+  { src: "/img/penguin.png", alt: "penguin" },
+  { src: "/img/pig.png", alt: "pig" },
+  { src: "/img/snake.png", alt: "snake" },
+  { src: "/img/narwhal.png", alt: "narwhal" },
+];
+
 export default function Game() {
-  const [cards, setCards] = useState<{ src: string; alt: string }[]>([]);
+  const [cards, setCards] = useState<ImageInterface[]>([]);
   const [openCards, setOpenCards] = useState<number[]>([]);
   const [blockedCards, setBlockedCards] = useState<number[]>([]);
 
   const [moves, setMoves] = useState(0);
   const [text, setText] = useState("");
 
-  const images = [
-    { src: "/img/elephant.png", alt: "elephant" },
-    { src: "/img/giraffe.png", alt: "giraffe" },
-    { src: "/img/owl.png", alt: "owl" },
-    { src: "/img/panda.png", alt: "panda" },
-    { src: "/img/penguin.png", alt: "penguin" },
-    { src: "/img/pig.png", alt: "pig" },
-    { src: "/img/snake.png", alt: "snake" },
-    { src: "/img/narwhal.png", alt: "narwhal" },
-  ];
+  const timeout = useRef<NodeJS.Timeout | null>(null);
+
+  const shuffleCards = (entryCards: ImageInterface[]) => {
+    let cards: ImageInterface[] = [];
+    cards = entryCards;
+
+    // Fisher–Yates shuffle algorithm
+    for (let i = cards.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      [cards[i], cards[j]] = [cards[j], cards[i]];
+    }
+    return cards;
+  };
 
   const restartGame = () => {
-    shuffleCards();
     setOpenCards([]);
     setBlockedCards([]);
     setMoves(0);
     setText("");
-  };
-
-  const shuffleCards = () => {
-    const cards = [...images, ...images];
-    for (let i = cards.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
-
-      // swap elements array[i] and array[j]
-      // we use "destructuring assignment" syntax to achieve that
-      // you'll find more details about that syntax in later chapters
-      // same can be written as:
-      // let t = array[i]; array[i] = array[j]; array[j] = t
-      [cards[i], cards[j]] = [cards[j], cards[i]];
-    }
-    setCards(cards);
+    setTimeout(() => setCards(shuffleCards([...images, ...images])), 300);
   };
 
   const handleCardClick = (index: number) => {
-    if (openCards.length < 2) setOpenCards([...openCards, index]);
+    if (openCards.length === 1) {
+      setOpenCards([...openCards, index]);
+    } else {
+      setOpenCards([index]);
+      clearTimeout(timeout.current as NodeJS.Timeout);
+    }
   };
 
   const clearOpenCards = () => {
     setOpenCards([]);
   };
 
-  const checkIsFlipped = (index: number) => {
+  const checkIsOpen = (index: number) => {
     return openCards.includes(index) || blockedCards.includes(index);
   };
 
   useEffect(() => {
-    shuffleCards();
+    setCards(shuffleCards([...images, ...images]));
   }, []);
 
   useEffect(() => {
@@ -72,11 +76,11 @@ export default function Game() {
       if (cards[openCards[0]] === cards[openCards[1]]) {
         setBlockedCards([...blockedCards, ...openCards]);
         clearOpenCards();
+        clearTimeout(timeout.current as NodeJS.Timeout);
       } else {
-        setTimeout(clearOpenCards, 1000);
+        timeout.current = setTimeout(clearOpenCards, 1500);
       }
     }
-    console.log("open: " + openCards);
   }, [openCards]);
 
   useEffect(() => {
@@ -85,9 +89,6 @@ export default function Game() {
     }
   }, [blockedCards]);
 
-  console.log("blocked: " + blockedCards);
-  console.log("cards: " + cards);
-
   return (
     <GamePageContainer>
       <CardContainer>
@@ -95,7 +96,7 @@ export default function Game() {
           <Card
             key={index}
             id={index}
-            isFlipped={checkIsFlipped(index)}
+            isOpen={checkIsOpen(index)}
             onClick={handleCardClick}
             image={card}
           />

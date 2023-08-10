@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-export const CardStyled = styled.div<{ isFlipped: boolean }>`
+export const CardStyled = styled.div<{ $isOpen: boolean }>`
   position: relative;
   width: 60px;
   height: 60px;
 
-  transform: ${({ isFlipped }) => isFlipped && "rotateY(180deg)"};
+  transform: ${({ $isOpen }) => $isOpen && "rotateY(180deg)"};
   transition: 0.3s;
   transform-style: preserve-3d;
 
