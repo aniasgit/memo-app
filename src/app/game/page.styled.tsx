@@ -21,7 +21,7 @@ export const CardContainer = styled.div`
   align-content: center;
   grid-template-columns: repeat(4, 60px);
   grid-template-rows: repeat(4, 60px);
-  gap: 10px;
+  gap: 15px;
   flex-grow: 1;
   padding: 20px;
   width: 100%;
@@ -29,6 +29,7 @@ export const CardContainer = styled.div`
   @media (min-width: 768px) {
     grid-template-columns: repeat(4, 80px);
     grid-template-rows: repeat(4, 80px);
+    gap: 20px;
     width: 70%;
     min-height: 100%;
   }
@@ -42,5 +43,7 @@ export const ResultsContainer = styled.div`
   @media (min-width: 768px) {
     width: 30%;
     height: 100%;
+    flex-direction: column;
+    justify-content: center;
   }
 `;

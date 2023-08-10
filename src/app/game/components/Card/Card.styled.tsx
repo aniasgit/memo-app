@@ -15,7 +15,7 @@ export const CardStyled = styled.div<{ isFlipped: boolean }>`
   }
 `;
 
-export const FrontFaceStyled = styled.div<{ isFlipped: boolean }>`
+export const FrontFaceStyled = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -33,7 +33,7 @@ export const FrontFaceStyled = styled.div<{ isFlipped: boolean }>`
   backface-visibility: hidden;
 `;
 
-export const BackFaceStyled = styled.div<{ isFlipped: boolean }>`
+export const BackFaceStyled = styled.div`
   position: absolute;
   top: 0;
   left: 0;
