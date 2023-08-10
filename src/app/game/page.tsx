@@ -9,7 +9,7 @@ import {
 import { Button } from "../components";
 
 export default function Game() {
-  const [cards, setCards] = useState<string[]>([]);
+  const [cards, setCards] = useState<{ src: string; alt: string }[]>([]);
   const [openCards, setOpenCards] = useState<number[]>([]);
   const [blockedCards, setBlockedCards] = useState<number[]>([]);
 
@@ -17,14 +17,14 @@ export default function Game() {
   const [text, setText] = useState("");
 
   const images = [
-    "/img/elephant.png",
-    "/img/giraffe.png",
-    "/img/owl.png",
-    "/img/panda.png",
-    "/img/penguin.png",
-    "/img/pig.png",
-    "/img/snake.png",
-    "/img/narwhal.png",
+    { src: "/img/elephant.png", alt: "elephant" },
+    { src: "/img/giraffe.png", alt: "giraffe" },
+    { src: "/img/owl.png", alt: "owl" },
+    { src: "/img/panda.png", alt: "panda" },
+    { src: "/img/penguin.png", alt: "penguin" },
+    { src: "/img/pig.png", alt: "pig" },
+    { src: "/img/snake.png", alt: "snake" },
+    { src: "/img/narwhal.png", alt: "narwhal" },
   ];
 
   const restartGame = () => {
@@ -73,7 +73,7 @@ export default function Game() {
         setBlockedCards([...blockedCards, ...openCards]);
         clearOpenCards();
       } else {
-        setTimeout(clearOpenCards, 1500);
+        setTimeout(clearOpenCards, 1000);
       }
     }
     console.log("open: " + openCards);
@@ -97,7 +97,7 @@ export default function Game() {
             id={index}
             isFlipped={checkIsFlipped(index)}
             onClick={handleCardClick}
-            image={card.toString()}
+            image={card}
           />
         ))}
       </CardContainer>
