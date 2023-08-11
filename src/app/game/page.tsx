@@ -4,9 +4,11 @@ import { Card, ImageInterface } from "./components";
 import {
   CardContainer,
   GamePageContainer,
+  InputStyled,
+  MovesParagraphStyled,
   ResultsContainer,
 } from "./page.styled";
-import { Button } from "../components";
+import { Button, Input, Modal } from "../components";
 
 const images = [
   { src: "/img/elephant.png", alt: "elephant" },
@@ -25,6 +27,7 @@ export default function Game() {
   const [blockedCards, setBlockedCards] = useState<number[]>([]);
 
   const [moves, setMoves] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [text, setText] = useState("");
 
   const timeout = useRef<NodeJS.Timeout | null>(null);
@@ -45,6 +48,7 @@ export default function Game() {
     setOpenCards([]);
     setBlockedCards([]);
     setMoves(0);
+    setIsModalOpen(false);
     setText("");
     setTimeout(() => setCards(shuffleCards([...images, ...images])), 300);
   };
@@ -85,7 +89,7 @@ export default function Game() {
 
   useEffect(() => {
     if (blockedCards.length === cards.length && blockedCards.length !== 0) {
-      setText("Gratulacje, wygrana!");
+      setIsModalOpen(true);
     }
   }, [blockedCards]);
 
@@ -103,10 +107,19 @@ export default function Game() {
         ))}
       </CardContainer>
       <ResultsContainer>
-        <p>{`Moves: ${moves}`}</p>
-        {text && <p>{"You found all pairs. Congrats!"}</p>}
-        <Button onClick={restartGame}>Play again</Button>
+        <MovesParagraphStyled>{`Moves: ${moves}`}</MovesParagraphStyled>
+        <Button onClick={restartGame}>Restart game</Button>
       </ResultsContainer>
+
+      <Modal isOpen={isModalOpen}>
+        <h1>Congratulation!</h1>
+        <MovesParagraphStyled>{`You found all pairs in ${moves} moves.`}</MovesParagraphStyled>
+        <p>Enter your name:</p>
+        <InputStyled />
+        <Button onClick={restartGame} type="primary">
+          Save the result
+        </Button>
+      </Modal>
     </GamePageContainer>
   );
 }

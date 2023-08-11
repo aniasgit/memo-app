@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import { Input } from "../components";
 
 export const GamePageContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  position: relative;
   height: 100%;
   width: 100%;
 
@@ -46,4 +48,13 @@ export const ResultsContainer = styled.div`
     flex-direction: column;
     justify-content: center;
   }
+`;
+
+export const InputStyled = styled(Input)`
+  width: 80%;
+  margin-bottom: 12px;
+`;
+
+export const MovesParagraphStyled = styled.p`
+  margin-bottom: 24px;
 `;
