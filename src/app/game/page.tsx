@@ -8,7 +8,7 @@ import {
   MovesParagraphStyled,
   ResultsContainer,
 } from "./page.styled";
-import { Button, Input, Modal } from "../components";
+import { Button, Modal } from "../components";
 
 const images = [
   { src: "/img/elephant.png", alt: "elephant" },
@@ -21,6 +21,11 @@ const images = [
   { src: "/img/narwhal.png", alt: "narwhal" },
 ];
 
+type Result = {
+  name: string;
+  moves: number;
+};
+
 export default function Game() {
   const [cards, setCards] = useState<ImageInterface[]>([]);
   const [openCards, setOpenCards] = useState<number[]>([]);
@@ -28,7 +33,7 @@ export default function Game() {
 
   const [moves, setMoves] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [text, setText] = useState("");
+  const [name, setName] = useState("");
 
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -49,7 +54,7 @@ export default function Game() {
     setBlockedCards([]);
     setMoves(0);
     setIsModalOpen(false);
-    setText("");
+    setName("");
     setTimeout(() => setCards(shuffleCards([...images, ...images])), 300);
   };
 
@@ -68,6 +73,27 @@ export default function Game() {
 
   const checkIsOpen = (index: number) => {
     return openCards.includes(index) || blockedCards.includes(index);
+  };
+
+  const compareResults = (a: Result, b: Result) => {
+    if (a.moves > b.moves) {
+      return 1;
+    } else if (a.moves < b.moves) {
+      return -1;
+    }
+    return 0;
+  };
+
+  const handleSaveRestultBtnClick = () => {
+    let results: Result[] = JSON.parse(localStorage.getItem("results") || "[]");
+    console.log(results);
+    results.push({ name, moves });
+    results.sort(compareResults);
+    if (results.length > 10) {
+      results = results.slice(0, 10);
+    }
+    localStorage.setItem("results", JSON.stringify(results));
+    restartGame();
   };
 
   useEffect(() => {
@@ -115,8 +141,11 @@ export default function Game() {
         <h1>Congratulation!</h1>
         <MovesParagraphStyled>{`You found all pairs in ${moves} moves.`}</MovesParagraphStyled>
         <p>Enter your name:</p>
-        <InputStyled />
-        <Button onClick={restartGame} type="primary">
+        <InputStyled
+          initialValue={name}
+          onChange={(event) => setName(event.currentTarget.value)}
+        />
+        <Button onClick={handleSaveRestultBtnClick} type="primary">
           Save the result
         </Button>
       </Modal>

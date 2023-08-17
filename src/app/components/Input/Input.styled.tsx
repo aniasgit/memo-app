@@ -5,4 +5,8 @@ export const InputStyled = styled.input`
   padding: 4px;
   border-radius: 8px;
   border: 1px solid #042e53;
+
+  &:focus {
+    outline: 2px solid #042e53;
+  }
 `;

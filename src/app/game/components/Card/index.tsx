@@ -19,7 +19,7 @@ export const Card = ({ id, isOpen, image, onClick }: CardInterface) => {
   return (
     <CardStyled $isOpen={isOpen}>
       <FrontFaceStyled>
-        <Image src={image.src} alt={image.alt} width={50} height={50} />
+        <Image src={image.src} alt={image.alt} width={80} height={60} />
       </FrontFaceStyled>
       <BackFaceStyled onClick={() => onClick(id)}>
         <FontAwesomeIcon icon={faQuestion} />

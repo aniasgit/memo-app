@@ -31,6 +31,7 @@ export const FrontFaceStyled = styled.div`
   box-shadow: 2px 2px 2px lightgray;
   transform: rotateY(180deg);
   backface-visibility: hidden;
+  overflow: hidden;
 `;
 
 export const BackFaceStyled = styled.div`
