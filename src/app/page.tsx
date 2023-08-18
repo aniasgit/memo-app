@@ -1,15 +1,12 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { PlayButton } from "./components";
-import { HeaderStyled, PageContainer } from "./page.styled";
+import { HeaderStyled, MainStyled } from "./page.styled";
 
 export default function Home() {
-  const router = useRouter();
-
   return (
-    <PageContainer>
+    <MainStyled>
       <HeaderStyled>Play memo game</HeaderStyled>
       <PlayButton />
-    </PageContainer>
+    </MainStyled>
   );
 }

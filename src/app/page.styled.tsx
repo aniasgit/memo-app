@@ -1,17 +1,11 @@
 import styled from "styled-components";
 
 export const MainStyled = styled.main`
-  height: calc(100vh - 110px);
-  background: whitesmoke;
-`;
-
-export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  height: calc(100vh - 110px);
 `;
 
 export const HeaderStyled = styled.h1`

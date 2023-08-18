@@ -12,9 +12,9 @@ export const ModalStyled = styled.div`
   width: 300px;
   padding: 50px 20px;
   gap: 8px;
-  border-radius: 8px;
   background-color: white;
   border: 1px solid lightgray;
+  border-radius: 8px;
   box-shadow: 2px 2px 2px lightgray;
   z-index: 10;
 

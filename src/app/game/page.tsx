@@ -8,7 +8,9 @@ import {
   MovesParagraphStyled,
   ResultsContainer,
 } from "./page.styled";
+import { MainStyled } from "../page.styled";
 import { Button, Modal } from "../components";
+import { Result } from "../libs";
 
 const images = [
   { src: "/img/elephant.png", alt: "elephant" },
@@ -20,11 +22,6 @@ const images = [
   { src: "/img/snake.png", alt: "snake" },
   { src: "/img/narwhal.png", alt: "narwhal" },
 ];
-
-type Result = {
-  name: string;
-  moves: number;
-};
 
 export default function Game() {
   const [cards, setCards] = useState<ImageInterface[]>([]);
@@ -120,35 +117,37 @@ export default function Game() {
   }, [blockedCards]);
 
   return (
-    <GamePageContainer>
-      <CardContainer>
-        {cards.map((card, index) => (
-          <Card
-            key={index}
-            id={index}
-            isOpen={checkIsOpen(index)}
-            onClick={handleCardClick}
-            image={card}
-          />
-        ))}
-      </CardContainer>
-      <ResultsContainer>
-        <MovesParagraphStyled>{`Moves: ${moves}`}</MovesParagraphStyled>
-        <Button onClick={restartGame}>Restart game</Button>
-      </ResultsContainer>
+    <MainStyled>
+      <GamePageContainer>
+        <CardContainer>
+          {cards.map((card, index) => (
+            <Card
+              key={index}
+              id={index}
+              isOpen={checkIsOpen(index)}
+              onClick={handleCardClick}
+              image={card}
+            />
+          ))}
+        </CardContainer>
+        <ResultsContainer>
+          <MovesParagraphStyled>{`Moves: ${moves}`}</MovesParagraphStyled>
+          <Button onClick={restartGame}>Restart game</Button>
+        </ResultsContainer>
 
-      <Modal isOpen={isModalOpen}>
-        <h1>Congratulation!</h1>
-        <MovesParagraphStyled>{`You found all pairs in ${moves} moves.`}</MovesParagraphStyled>
-        <p>Enter your name:</p>
-        <InputStyled
-          initialValue={name}
-          onChange={(event) => setName(event.currentTarget.value)}
-        />
-        <Button onClick={handleSaveRestultBtnClick} type="primary">
-          Save the result
-        </Button>
-      </Modal>
-    </GamePageContainer>
+        <Modal isOpen={isModalOpen}>
+          <h1>Congratulation!</h1>
+          <MovesParagraphStyled>{`You found all pairs in ${moves} moves.`}</MovesParagraphStyled>
+          <p>Enter your name:</p>
+          <InputStyled
+            value={name}
+            onChange={(event) => setName(event.currentTarget.value)}
+          />
+          <Button onClick={handleSaveRestultBtnClick} type="primary">
+            Save the result
+          </Button>
+        </Modal>
+      </GamePageContainer>
+    </MainStyled>
   );
 }

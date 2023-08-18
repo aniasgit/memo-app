@@ -10,3 +10,8 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
 }
+
+main {
+  background-color: whitesmoke;
+  width: 100%;
+}

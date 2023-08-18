@@ -1,21 +1,11 @@
 import { InputStyled } from "./Input.styled";
 
-interface InputInterface {
+interface InputInterface extends React.HTMLProps<HTMLInputElement> {
   className?: string;
-  initialValue: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Input = ({
-  className,
-  initialValue,
-  onChange,
-}: InputInterface) => {
+export const Input = ({ className, value, onChange }: InputInterface) => {
   return (
-    <InputStyled
-      className={className}
-      value={initialValue}
-      onChange={onChange}
-    />
+    <InputStyled className={className} value={value} onChange={onChange} />
   );
 };

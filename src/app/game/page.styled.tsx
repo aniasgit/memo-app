@@ -9,6 +9,7 @@ export const GamePageContainer = styled.div`
   position: relative;
   height: 100%;
   width: 100%;
+  max-width: 1000px;
 
   @media (min-width: 768px) {
     flex-direction: row;
