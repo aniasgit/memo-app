@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Card, ImageInterface } from "./components";
+import { Card, ImageInterface, Timer } from "./components";
 import {
   CardContainer,
   GamePageContainer,
@@ -10,7 +10,7 @@ import {
 } from "./page.styled";
 import { MainStyled } from "../page.styled";
 import { Button, Modal } from "../components";
-import { Result } from "../libs";
+import { Result, convertTime } from "../libs";
 
 const images = [
   { src: "/img/elephant.png", alt: "elephant" },
@@ -31,6 +31,9 @@ export default function Game() {
   const [moves, setMoves] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
+  const [isTimerStarted, setIsTimerStarted] = useState(false);
+  const [isTimerEnded, setIsTimerEnded] = useState(false);
+  const [time, setTime] = useState(0);
 
   const timeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -53,9 +56,14 @@ export default function Game() {
     setIsModalOpen(false);
     setName("");
     setTimeout(() => setCards(shuffleCards([...images, ...images])), 300);
+    setIsTimerStarted(false);
+    setIsTimerEnded(false);
   };
 
   const handleCardClick = (index: number) => {
+    if (!isTimerStarted) {
+      setIsTimerStarted(true);
+    }
     if (openCards.length === 1) {
       setOpenCards([...openCards, index]);
     } else {
@@ -84,7 +92,7 @@ export default function Game() {
   const handleSaveRestultBtnClick = () => {
     let results: Result[] = JSON.parse(localStorage.getItem("results") || "[]");
     console.log(results);
-    results.push({ name, moves });
+    results.push({ name, moves, time });
     results.sort(compareResults);
     if (results.length > 10) {
       results = results.slice(0, 10);
@@ -112,9 +120,12 @@ export default function Game() {
 
   useEffect(() => {
     if (blockedCards.length === cards.length && blockedCards.length !== 0) {
+      setIsTimerEnded(true);
       setIsModalOpen(true);
     }
   }, [blockedCards]);
+
+  console.log(time);
 
   return (
     <MainStyled>
@@ -132,12 +143,25 @@ export default function Game() {
         </CardContainer>
         <ResultsContainer>
           <MovesParagraphStyled>{`Moves: ${moves}`}</MovesParagraphStyled>
+          <Timer
+            isStarted={isTimerStarted}
+            isEnded={isTimerEnded}
+            onEnd={setTime}
+          />
           <Button onClick={restartGame}>Restart game</Button>
+          <Button
+            onClick={() => {
+              setIsTimerEnded(true);
+            }}>
+            End game
+          </Button>
         </ResultsContainer>
 
         <Modal isOpen={isModalOpen}>
           <h1>Congratulation!</h1>
-          <MovesParagraphStyled>{`You found all pairs in ${moves} moves.`}</MovesParagraphStyled>
+          <MovesParagraphStyled>{`You found all pairs in ${moves}. Your time is ${convertTime(
+            time
+          )}.`}</MovesParagraphStyled>
           <p>Enter your name:</p>
           <InputStyled
             value={name}

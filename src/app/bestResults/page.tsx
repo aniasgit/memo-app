@@ -22,7 +22,6 @@ export default function BestResults() {
     {
       name: "Name",
       selector: (row) => row.name,
-      sortable: true,
     },
     {
       name: "Time",
