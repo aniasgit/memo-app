@@ -2,17 +2,17 @@ import styled from "styled-components";
 
 export const CardStyled = styled.div<{ $isOpen: boolean }>`
   position: relative;
-  width: 60px;
-  height: 60px;
+  width: 100%;
+  aspect-ratio: 1;
 
   transform: ${({ $isOpen }) => $isOpen && "rotateY(180deg)"};
   transition: 0.3s;
   transform-style: preserve-3d;
 
-  @media (min-width: 768px) {
+  /* @media (min-width: 768px) {
     width: 80px;
     height: 80px;
-  }
+  } */
 `;
 
 export const FrontFaceStyled = styled.div`
@@ -32,6 +32,12 @@ export const FrontFaceStyled = styled.div`
   transform: rotateY(180deg);
   backface-visibility: hidden;
   overflow: hidden;
+`;
+
+export const ImageContainer = styled.div`
+  position: relative;
+  width: 90%;
+  height: 90%;
 `;
 
 export const BackFaceStyled = styled.div`

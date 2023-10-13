@@ -1,8 +1,8 @@
 "use client";
-import { faGear, faHouse, faTrophy } from "@fortawesome/free-solid-svg-icons";
 import { Navlink } from "..";
 import { NavbarStyled } from "./Navbar.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGear, faHouse, faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 export const Navbar = () => {
   return (
@@ -10,7 +10,7 @@ export const Navbar = () => {
       <Navlink href="/">
         <FontAwesomeIcon icon={faHouse} />
       </Navlink>
-      <Navlink href="/bestResults">
+      <Navlink href="/results">
         <FontAwesomeIcon icon={faTrophy} />
       </Navlink>
       <Navlink href="/settings">

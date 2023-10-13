@@ -1,5 +1,10 @@
 import Image from "next/image";
-import { BackFaceStyled, CardStyled, FrontFaceStyled } from "./Card.styled";
+import {
+  BackFaceStyled,
+  CardStyled,
+  FrontFaceStyled,
+  ImageContainer,
+} from "./Card.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQuestion } from "@fortawesome/free-solid-svg-icons";
 
@@ -19,7 +24,9 @@ export const Card = ({ id, isOpen, image, onClick }: CardInterface) => {
   return (
     <CardStyled $isOpen={isOpen}>
       <FrontFaceStyled>
-        <Image src={image.src} alt={image.alt} width={80} height={60} />
+        <ImageContainer>
+          <Image src={image.src} alt={image.alt} fill />
+        </ImageContainer>
       </FrontFaceStyled>
       <BackFaceStyled onClick={() => onClick(id)}>
         <FontAwesomeIcon icon={faQuestion} />

@@ -40,7 +40,6 @@ export const TableStyled = styled(DataTable)`
   }
 
   .rdt_TableCol {
-    /* justify-content: center; */
     padding: 0 4px;
     color: #042e53;
     font-weight: bold;

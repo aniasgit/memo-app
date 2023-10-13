@@ -2,11 +2,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Card, ImageInterface, Timer } from "./components";
 import {
+  PageContainer,
   CardContainer,
-  GamePageContainer,
+  GameContainer,
   InputStyled,
   MovesParagraphStyled,
   ResultsContainer,
+  Results,
+  Buttons,
 } from "./page.styled";
 import { MainStyled } from "../page.styled";
 import { Button, Modal } from "../components";
@@ -33,6 +36,7 @@ export default function Game() {
   const [name, setName] = useState("");
   const [isTimerStarted, setIsTimerStarted] = useState(false);
   const [isTimerEnded, setIsTimerEnded] = useState(false);
+  const [isTimerPaused, setIsTimerPaused] = useState(false);
   const [time, setTime] = useState(0);
 
   const timeout = useRef<NodeJS.Timeout | null>(null);
@@ -58,11 +62,15 @@ export default function Game() {
     setTimeout(() => setCards(shuffleCards([...images, ...images])), 300);
     setIsTimerStarted(false);
     setIsTimerEnded(false);
+    setIsTimerPaused(false);
   };
 
   const handleCardClick = (index: number) => {
     if (!isTimerStarted) {
       setIsTimerStarted(true);
+    }
+    if (isTimerPaused) {
+      setIsTimerPaused(false);
     }
     if (openCards.length === 1) {
       setOpenCards([...openCards, index]);
@@ -85,8 +93,11 @@ export default function Game() {
       return 1;
     } else if (a.moves < b.moves) {
       return -1;
-    }
-    return 0;
+    } else if (a.time > b.time) {
+      return 1;
+    } else if (a.time < b.time) {
+      return -1;
+    } else return 0;
   };
 
   const handleSaveRestultBtnClick = () => {
@@ -94,9 +105,6 @@ export default function Game() {
     console.log(results);
     results.push({ name, moves, time });
     results.sort(compareResults);
-    if (results.length > 10) {
-      results = results.slice(0, 10);
-    }
     localStorage.setItem("results", JSON.stringify(results));
     restartGame();
   };
@@ -125,53 +133,58 @@ export default function Game() {
     }
   }, [blockedCards]);
 
-  console.log(time);
-
   return (
     <MainStyled>
-      <GamePageContainer>
-        <CardContainer>
-          {cards.map((card, index) => (
-            <Card
-              key={index}
-              id={index}
-              isOpen={checkIsOpen(index)}
-              onClick={handleCardClick}
-              image={card}
-            />
-          ))}
-        </CardContainer>
-        <ResultsContainer>
-          <MovesParagraphStyled>{`Moves: ${moves}`}</MovesParagraphStyled>
-          <Timer
-            isStarted={isTimerStarted}
-            isEnded={isTimerEnded}
-            onEnd={setTime}
-          />
-          <Button onClick={restartGame}>Restart game</Button>
-          <Button
-            onClick={() => {
-              setIsTimerEnded(true);
-            }}>
-            End game
-          </Button>
-        </ResultsContainer>
+      <PageContainer>
+        <GameContainer>
+          <CardContainer>
+            {cards.map((card, index) => (
+              <Card
+                key={index}
+                id={index}
+                isOpen={checkIsOpen(index)}
+                onClick={handleCardClick}
+                image={card}
+              />
+            ))}
+          </CardContainer>
+          <ResultsContainer>
+            <Results>
+              <MovesParagraphStyled>{`Moves: ${moves}`}</MovesParagraphStyled>
+              <Timer
+                isStarted={isTimerStarted}
+                isEnded={isTimerEnded}
+                isPaused={isTimerPaused}
+                onEnd={setTime}
+              />
+            </Results>
+            <Buttons>
+              <Button onClick={restartGame}>Restart game</Button>
+              <Button
+                onClick={() => {
+                  setIsTimerPaused((prev) => !prev);
+                }}>
+                Pause game
+              </Button>
+            </Buttons>
+          </ResultsContainer>
 
-        <Modal isOpen={isModalOpen}>
-          <h1>Congratulation!</h1>
-          <MovesParagraphStyled>{`You found all pairs in ${moves}. Your time is ${convertTime(
-            time
-          )}.`}</MovesParagraphStyled>
-          <p>Enter your name:</p>
-          <InputStyled
-            value={name}
-            onChange={(event) => setName(event.currentTarget.value)}
-          />
-          <Button onClick={handleSaveRestultBtnClick} type="primary">
-            Save the result
-          </Button>
-        </Modal>
-      </GamePageContainer>
+          <Modal isOpen={isModalOpen}>
+            <h1>Congratulation!</h1>
+            <MovesParagraphStyled>{`You found all pairs in ${moves} moves. Your time is ${convertTime(
+              time
+            )}.`}</MovesParagraphStyled>
+            <p>Enter your name:</p>
+            <InputStyled
+              value={name}
+              onChange={(event) => setName(event.currentTarget.value)}
+            />
+            <Button onClick={handleSaveRestultBtnClick} type="primary">
+              Save the result
+            </Button>
+          </Modal>
+        </GameContainer>
+      </PageContainer>
     </MainStyled>
   );
 }

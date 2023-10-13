@@ -6,7 +6,7 @@ import {
   TableContainerStyled,
   TableStyled,
 } from "./page.styled";
-import { Result } from "../libs";
+import { Result, convertTime } from "../libs";
 import { useEffect, useState } from "react";
 
 export default function BestResults() {
@@ -25,14 +25,18 @@ export default function BestResults() {
     },
     {
       name: "Time",
-      width: "70px",
-      hide: 769,
+      selector: (row) => (row.time ? convertTime(row.time) : "-"),
+      width: "80px",
+      hide: 768,
+      center: true,
+      sortable: true,
     },
     {
       name: "Moves",
       selector: (row) => row.moves,
-      width: "65px",
+      width: "80px",
       center: true,
+      sortable: true,
     },
   ];
 
@@ -45,9 +49,9 @@ export default function BestResults() {
 
   return (
     <BestResultPageContainerStyled>
-      <H1Styled>Top 10 results</H1Styled>
+      <H1Styled>Results</H1Styled>
       <TableContainerStyled>
-        <TableStyled columns={columns} data={results} />
+        <TableStyled columns={columns} data={results} pagination />
       </TableContainerStyled>
     </BestResultPageContainerStyled>
   );

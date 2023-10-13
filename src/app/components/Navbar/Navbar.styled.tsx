@@ -9,4 +9,5 @@ export const NavbarStyled = styled.nav`
   height: 70px;
   background-color: #042e53;
   color: #ddd;
+  position: relative;
 `;
